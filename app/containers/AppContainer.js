@@ -37,8 +37,14 @@ class AppContainer extends Component {
 
 }
 
-function mapDispatchToPros(dispatch) {
-    return bindActionCreators(ActionCreators,dispatch);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect((state)=>{return { recipeCount:state.recipeCount}}, mapDispatchToPros)(AppContainer)
+function mapStateToProps(state) {
+    return {
+        recipeCount: state.recipeCount
+    };
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AppContainer)
