@@ -4,6 +4,8 @@ class Api {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'dataType': 'json',
+            'Origin': '',
+            'Host': 'ozui.co'
         }
     }
 
@@ -24,17 +26,26 @@ class Api {
     }
 
     static xhr(route, params, verb) {
-        const host = 'http://www.recipepuppy.com'
-        const url = `${host}${route}`
-        let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null );
+        const host = 'http://ozui.co/feed/find/'
+        const url = '${host}${route}'
+        let options = Object.assign({method: verb}, params ? {body: JSON.stringify(params)} : null);
         options.headers = Api.headers()
-        return fetch(url, options).then( resp => {
-            let json = resp.json();
-            if (resp.ok) {
-                return json
-            }
-            return json.then(err => {throw err});
-        }).then( json => json.results );
+
+        return fetch(host, options)
+            .then( (response) => {
+                console.log('Actions - fetchJobs - received response: ', response)
+                return response.json();
+            })
+            .then( (jobs) => {
+                console.log('Actions - fetchJobs - received jobs: ', jobs)
+                return jobs;
+            })
+            .catch( (error) => {
+                console.warn('Actions - fetchJobs - recreived error: ', error)
+            })
     }
+
 }
+
 export default Api
+

@@ -7,13 +7,16 @@ import {bindActionCreators} from 'redux'
 const {
     View,
     Text,
+    TextInput,
     TouchableHighlight
 } = ReactNative
 
 class AppContainer extends Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            ingredientInput : ''
+        }
     }
 
     incrementRecipeCount() {
@@ -24,6 +27,12 @@ class AppContainer extends Component {
         this.props.addRecipe();
     }
 
+    searchPressed() {
+        this.props.fetchRecipes(this.state.ingredientInput).then((res)=>{
+            console.log("Response " + res);
+        })
+    }
+
     render() {
         return <View>
             <Text>
@@ -32,6 +41,21 @@ class AppContainer extends Component {
             <TouchableHighlight onPress={()=> {this.addRecipe() }}>
                 <Text>Add Recipe</Text>
             </TouchableHighlight>
+            <View>
+                <TextInput
+                    returnKeyType="search"
+                    placeholder="Ingredents (comma delimited)"
+                    onChangeText = {(ingredientInput) => this.setState({ingredientInput})}
+                    value = {this.state.ingredientInput}
+                    />
+                <TouchableHighlight  onPress={ () => this.searchPressed() }>
+                    <Text>Fetch Recipes</Text>
+                </TouchableHighlight>
+
+            </View>
+
+
+
         </View>
     }
 
