@@ -21,7 +21,6 @@ export function fetchRecipes(ingredients) {
             "sort": "points DESC"
         };
         return Api.post('feed/find/',params).then(resp => {
-            console.log('result BB' + resp);
             dispatch(setSearchedRecipes({recipes: resp}));
         }).catch( (ex) => {
             console.log(ex);

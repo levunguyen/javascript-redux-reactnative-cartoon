@@ -14,11 +14,12 @@ export const recipeCount = createReducers(0,{
 export const searchedRecipes = createReducers({}, {
 
     [types.SET_SEARCHED_RECIPES](state, action) {
-        console.log("reducer data" + action.recipes )
+        console.log("Roger Reducers")
         let newState = {}
-        action.recipes.forEach( (recipe) => {
-            let id = recipe.href
-            newState[id] = Object.assign({}, recipe, { id });
+        action.recipes.forEach( (feed) => {
+
+            let id = feed.video.title
+            newState[id] = Object.assign({}, feed, { id });
         });
         return newState;
     },

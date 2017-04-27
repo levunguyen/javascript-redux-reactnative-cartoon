@@ -8,7 +8,9 @@ const {
     View,
     Text,
     TextInput,
-    TouchableHighlight
+    TouchableHighlight,
+    ScrollView,
+    Image
 } = ReactNative
 
 class AppContainer extends Component {
@@ -29,8 +31,13 @@ class AppContainer extends Component {
 
     searchPressed() {
         this.props.fetchRecipes(this.state.ingredientInput).then((res)=>{
-            console.log("Response " + res);
+
+            this.recipes();
         })
+    }
+
+    recipes() {
+        return Object.keys(this.props.searchedRecipes).map(key => this.props.searchedRecipes[key])
     }
 
     render() {
@@ -52,10 +59,23 @@ class AppContainer extends Component {
                     <Text>Fetch Recipes</Text>
                 </TouchableHighlight>
 
+
+                <ScrollView >
+                    {this.recipes().map((recipe) => {
+                        console.log("Kqua" + JSON.stringify(recipe));
+
+                        return <TouchableHighlight key={recipe.title}  onPress={ () => this.props.navigate({ key: 'Detail', id: recipe.title}) }>
+                            <View>
+                                <Image source={ { uri: recipe.thumb } }  />
+                                <Text>{recipe.title}</Text>
+                            </View>
+                        </TouchableHighlight>
+                    })}
+                    {<Text>Searching...</Text> }
+                </ScrollView>
+
+
             </View>
-
-
-
         </View>
     }
 
@@ -67,7 +87,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     return {
-        recipeCount: state.recipeCount
+        recipeCount: state.recipeCount,
+        searchedRecipes : state.searchedRecipes
     };
 }
 
